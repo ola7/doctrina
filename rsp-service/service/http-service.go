@@ -14,7 +14,7 @@ func StartHTTPService(port string) {
 	log.Println("Starting HTTP listener at: " + port)
 	err := http.ListenAndServe(":"+port, nil) // blocking wait
 	if err != nil {
-		log.Fatal("An error occured starting HTTP listener at port: " + port)
-		log.Fatal("Error: " + err.Error())
+		log.Println("An error occured starting HTTP listener at port: " + port)
+		log.Fatalln("Error: " + err.Error())
 	}
 }

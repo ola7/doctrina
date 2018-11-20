@@ -1,7 +1,6 @@
 package service
 
 import (
-	"log"
 	"net/http"
 )
 
@@ -16,16 +15,12 @@ type Route struct {
 // Routes wraps a slice of routes
 type Routes []Route
 
-// Initialize our routes
+// initialize routes - refer to handler funcs in handlers.go
 var routes = Routes{
 	Route{
-		"GetAccount", // Name
-		"GET",        // HTTP method
-		"/accounts/{accountId}", // Route pattern
-		func(w http.ResponseWriter, r *http.Request) {
-			w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-			w.Write([]byte("{\"result\":\"OK\"}"))
-			log.Println("Received request")
-		},
+		"GetUser",         // name
+		"GET",             // http method
+		"/users/{userID}", // route pattern
+		GetUser,           // see handlers.go
 	},
 }
