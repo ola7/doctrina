@@ -1,4 +1,4 @@
-FROM iron/base
+FROM alpine
 
 EXPOSE 8989
 ADD rsp-service-linux-amd64 /
