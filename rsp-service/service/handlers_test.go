@@ -9,7 +9,12 @@ import (
 	"../dbclient"
 	"../model"
 	. "github.com/smartystreets/goconvey/convey"
+	"gopkg.in/h2non/gock.v1"
 )
+
+func init() {
+	gock.InterceptClient(client)
+}
 
 func TestGetUserWrongPath(t *testing.T) {
 
@@ -29,6 +34,15 @@ func TestGetUserWrongPath(t *testing.T) {
 }
 
 func TestGetUser(t *testing.T) {
+
+	// make sure http intercept is turned off after this test
+	defer gock.Off()
+
+	// turn on http intercept here
+	gock.New("http://quotes-service:8080").
+		Get("api/quote").MatchParam("strength", "4").
+		Reply(200).
+		BodyString(`{"quote":"May the source be with you. Always.","ipAddress":"10.0.0.5:8080","language":"en"}`)
 
 	mockRepo := &dbclient.MockBoltClient{}
 
@@ -51,6 +65,7 @@ func TestGetUser(t *testing.T) {
 				json.Unmarshal(resp.Body.Bytes(), &user)
 				So(user.Id, ShouldEqual, "123")
 				So(user.Name, ShouldEqual, "Name_123")
+				So(user.Quote.Text, ShouldEqual, "May the source be with you. Always.")
 			})
 		})
 	})

@@ -15,6 +15,7 @@ type IBoltClient interface {
 	OpenBoltDb()
 	QueryUser(userID string) (model.User, error)
 	SeedFakeUsers(n int)
+	CheckStatus() bool
 }
 
 // BoltClient is the real implementation
@@ -38,6 +39,11 @@ func (bc *BoltClient) SeedFakeUsers(n int) {
 	if createdNew {
 		bc.seedUsers(n)
 	}
+}
+
+// CheckStatus is a simple status check to be used by health checks
+func (bc *BoltClient) CheckStatus() bool {
+	return bc.boltDB != nil
 }
 
 // initializeBucket creates (and override) a bucket in our DB

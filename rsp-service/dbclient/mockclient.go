@@ -23,3 +23,9 @@ func (m *MockBoltClient) OpenBoltDb() {
 // SeedFakeUsers does nothing
 func (m *MockBoltClient) SeedFakeUsers(n int) {
 }
+
+// CheckStatus returns if client has already been called
+func (m *MockBoltClient) CheckStatus() bool {
+	args := m.Mock.Called()
+	return args.Get(0).(bool)
+}

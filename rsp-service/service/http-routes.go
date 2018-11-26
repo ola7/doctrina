@@ -23,4 +23,16 @@ var routes = Routes{
 		"/users/{userID}", // route pattern
 		GetUser,           // see handlers.go
 	},
+	Route{
+		"HealthCheck", // name
+		"GET",         // http method
+		"/health",     // route pattern
+		HealthCheck,   // see handlers.go
+	},
+	Route{
+		"SetHealthState", // name
+		"GET",            // http method
+		"/testability/health/{state}", // route pattern
+		SetHealthState,                // see handlers.go
+	},
 }
