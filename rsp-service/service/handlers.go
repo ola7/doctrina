@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net"
 	"net/http"
 	"strconv"
@@ -12,6 +11,7 @@ import (
 	"../dbclient"
 	"../model"
 	"github.com/gorilla/mux"
+	"github.com/sirupsen/logrus"
 )
 
 // DBClient is the DBC instance
@@ -79,7 +79,7 @@ func SetHealthState(w http.ResponseWriter, r *http.Request) {
 	var state, err = strconv.ParseBool(mux.Vars(r)["state"])
 
 	if err != nil {
-		fmt.Println("health state must be true or false")
+		logrus.Println("health state must be true or false")
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
@@ -105,7 +105,7 @@ func getQuote() (model.Quote, error) {
 func getIP() string {
 	addrs, err := net.InterfaceAddrs()
 	if err != nil {
-		log.Println("Error occurred getting IP:", err)
+		logrus.Println("Error occurred getting IP:", err)
 		return "n/a"
 	}
 	for _, address := range addrs {

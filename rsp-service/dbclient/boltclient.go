@@ -3,11 +3,11 @@ package dbclient
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"strconv"
 
 	"../model"
 	"github.com/boltdb/bolt"
+	"github.com/sirupsen/logrus"
 )
 
 // IBoltClient acts as an interface that enables mocking
@@ -29,7 +29,7 @@ func (bc *BoltClient) OpenBoltDb() {
 	// Open() will create if it doesn't exist
 	bc.boltDB, err = bolt.Open("users.db", 0600, nil)
 	if err != nil {
-		log.Fatal(err)
+		logrus.Fatal(err)
 	}
 }
 
@@ -51,15 +51,15 @@ func (bc *BoltClient) initializeBucket(bucketName string) bool {
 	createdNew := false
 	bc.boltDB.Update(func(tx *bolt.Tx) error {
 		if tx.Bucket([]byte(bucketName)) != nil {
-			log.Println("Using existing bucket:", bucketName)
+			logrus.Println("Using existing bucket:", bucketName)
 			createdNew = false
 		} else {
 			_, err := tx.CreateBucket([]byte(bucketName))
 			createdNew = true
 			if err != nil {
-				log.Printf("Create bucket '%v' failed:%v\n", bucketName, err)
+				logrus.Printf("Create bucket '%v' failed:%v\n", bucketName, err)
 			} else {
-				log.Println("Created new bucket:", bucketName)
+				logrus.Println("Created new bucket:", bucketName)
 			}
 		}
 		return nil
@@ -92,7 +92,7 @@ func (bc *BoltClient) seedUsers(n int) {
 			return err
 		})
 	}
-	log.Printf("Seeded fake users: %v users\n", total)
+	logrus.Printf("Seeded fake users: %v users\n", total)
 }
 
 // QueryUser finds a User from its id

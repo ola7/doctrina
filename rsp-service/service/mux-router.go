@@ -1,9 +1,8 @@
 package service
 
 import (
-	"log"
-
 	"github.com/gorilla/mux"
+	"github.com/sirupsen/logrus"
 )
 
 // NewRouter returns pointer to Gorilla mux.Router we can use as a handler.
@@ -19,7 +18,7 @@ func NewRouter() *mux.Router {
 			Path(route.Pattern).
 			Name(route.Name).
 			Handler(route.HandlerFunc)
-		log.Println("Attaching route:", route.Pattern)
+		logrus.Println("Attaching route:", route.Pattern)
 	}
 
 	return router

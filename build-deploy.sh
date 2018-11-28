@@ -25,6 +25,6 @@ docker service rm vizualizer
 docker service rm quotes-service
 
 # Deploy services
-docker service create --name=rsp-service --replicas=2 --network=$SWARM_NET -p=8989:8989 ola7/rsp-service
-docker service create --name=vizualizer --publish=8990:8080/tcp --constraint=node.role==manager --mount=type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock dockersamples/visualizer
-docker service create --name=quotes-service --replicas=2 --network=doctrinanet eriklupander/quotes-service
+docker service create --name=rsp-service --replicas=1 --network=$SWARM_NET -p=8989:8989 ola7/rsp-service
+docker service create --name=vizualizer --replicas=1 --network=$SWARM_NET --publish=8990:8080/tcp --constraint=node.role==manager --mount=type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock dockersamples/visualizer
+docker service create --name=quotes-service --replicas=1 --network=$SWARM_NET eriklupander/quotes-service
